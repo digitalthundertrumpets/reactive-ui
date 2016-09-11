@@ -1,1 +1,1 @@
-export const ACTION_TYPE = 'ACTION_TYPE';
+export const GENERATE_NEW_SCREEN = 'GENERATE_NEW_SCREEN';

@@ -1,7 +1,9 @@
 import { fromJS } from 'immutable';
 
 var initialState = fromJS({
-  state1: 1
+  shape: "Line",
+  location: 3,
+  color: "green"
 });
 
 export default initialState;
