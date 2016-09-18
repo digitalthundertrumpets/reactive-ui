@@ -1,49 +1,35 @@
 import * as types from './action-types';
+import store from '../store/store';
+
+export function updateWeightings(liked) {
+  return {
+    type: types.UPDATE_WEIGHTINGS,
+    liked: liked
+  }
+}
 
 export function generateNewScreen() {
   return {
     type: types.GENERATE_NEW_SCREEN,
-    color: randomColor(),
-    location: randomLocation(),
-    shape: randomShape()
+    colour: randomiseProperty('colour'),
+    location: randomiseProperty('location'),
+    shape: randomiseProperty('shape')
   }
 };
 
-function randomColor() {
-  var r = Math.random();
-  if(r<0.25) {
-    return 'yellow';
-  } else if (r <0.5) {
-    return 'red';
-  } else if (r <0.75) {
-    return 'green';
-  } else if (r <1) {
-    return 'blue';
-  }
-};
+function randomiseProperty(property) {
 
-function randomLocation() {
+  var weightings = store.getState().getIn(['properties',property]);
+  var probability = 0;
   var r = Math.random();
-  if(r<0.25) {
-    return 0;
-  } else if (r <0.5) {
-    return 1;
-  } else if (r <0.75) {
-    return 2;
-  } else if (r <1) {
-    return 3;
-  }
-};
 
-function randomShape() {
-  var r = Math.random();
-  if(r<0.25) {
-    return 'Egg';
-  } else if (r <0.5) {
-    return 'Rectangle';
-  } else if (r <0.75) {
-    return 'Circle';
-  } else if (r <1) {
-    return 'Line';
+  for(var i = 0; i < weightings.size; i ++) {
+    probability = probability + weightings.get(i).get('weighting')
+    if(r < probability) {
+      return weightings.get(i).get('value');
+    }
   }
+
+  return weightings.get(weightings.size-1).get('value');
+
 };

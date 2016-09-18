@@ -2,15 +2,17 @@ import React from 'react';
 import { connect } from 'react-redux';
 import UserInterface from '../components/UserInterface.jsx';
 import store from '../store/store';
-import { generateNewScreen } from '../actions/actions';
+import { generateNewScreen, updateWeightings } from '../actions/actions';
 
 class TestContainer extends React.Component {
 
   likeClicked() {
+    store.dispatch(updateWeightings(true));
     store.dispatch(generateNewScreen());
   }
 
   dislikeClicked() {
+    store.dispatch(updateWeightings(false));
     store.dispatch(generateNewScreen());
   }
 
@@ -19,7 +21,7 @@ class TestContainer extends React.Component {
       <div>
         <UserInterface
           location={this.props.location}
-          color={this.props.color}
+          colour={this.props.colour}
           shape={this.props.shape}
         />
         <button onClick={this.likeClicked}>Like</button>
@@ -31,9 +33,9 @@ class TestContainer extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    location: state.get('location'),
-    color: state.get('color'),
-    shape: state.get('shape')
+    location: state.getIn(['currentDisplay','location']),
+    colour: state.getIn(['currentDisplay','colour']),
+    shape: state.getIn(['currentDisplay','shape'])
   };
 }
 
